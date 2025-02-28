@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+    <link rel="stylesheet" type="text/css" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Send Email</h1>
+        <form id="emailForm">
+            <div class="form-group">
+                <label for="to">Recipient:</label>
+                <input type="email" id="to" name="to" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Message:</label>
+                <textarea id="text" name="text" required></textarea>
+            </div>
+            
+            <button type="submit">Send Email</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('emailForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            const response = await fetch('/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const message = await response.text();
+            alert(message);
+        };
+    </script>
+</body>
+</html>
